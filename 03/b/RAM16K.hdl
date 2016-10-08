@@ -1,0 +1,79 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/b/RAM16K.hdl
+
+/**
+ * Memory of 16K registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then
+ * the in value is loaded into the memory location specified by address
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM16K {
+    IN in[16], load, address[14];
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(in = load, sel = address[0..2], a = aload, b = bload, c = cload, d = dload, e = eload, f = fload, g = gload, h = hload);
+
+    DMux4Way(in = aload, sel = address[3..4], a = aaload, b = abload, c = acload, d = adload);
+    DMux4Way(in = bload, sel = address[3..4], a = baload, b = bbload, c = bcload, d = bdload);
+    DMux4Way(in = cload, sel = address[3..4], a = caload, b = cbload, c = ccload, d = cdload);
+    DMux4Way(in = dload, sel = address[3..4], a = daload, b = dbload, c = dcload, d = ddload);
+    DMux4Way(in = eload, sel = address[3..4], a = eaload, b = ebload, c = ecload, d = edload);
+    DMux4Way(in = fload, sel = address[3..4], a = faload, b = fbload, c = fcload, d = fdload);
+    DMux4Way(in = gload, sel = address[3..4], a = gaload, b = gbload, c = gcload, d = gdload);
+    DMux4Way(in = hload, sel = address[3..4], a = haload, b = hbload, c = hcload, d = hdload);
+
+    RAM512(in = in, load = aaload, address = address[5..13], out = aao);
+    RAM512(in = in, load = abload, address = address[5..13], out = abo);
+    RAM512(in = in, load = acload, address = address[5..13], out = aco);
+    RAM512(in = in, load = adload, address = address[5..13], out = ado);
+
+    RAM512(in = in, load = baload, address = address[5..13], out = bao);
+    RAM512(in = in, load = bbload, address = address[5..13], out = bbo);
+    RAM512(in = in, load = bcload, address = address[5..13], out = bco);
+    RAM512(in = in, load = bdload, address = address[5..13], out = bdo);
+
+    RAM512(in = in, load = caload, address = address[5..13], out = cao);
+    RAM512(in = in, load = cbload, address = address[5..13], out = cbo);
+    RAM512(in = in, load = ccload, address = address[5..13], out = cco);
+    RAM512(in = in, load = cdload, address = address[5..13], out = cdo);
+
+    RAM512(in = in, load = daload, address = address[5..13], out = dao);
+    RAM512(in = in, load = dbload, address = address[5..13], out = dbo);
+    RAM512(in = in, load = dcload, address = address[5..13], out = dco);
+    RAM512(in = in, load = ddload, address = address[5..13], out = ddo);
+
+    RAM512(in = in, load = eaload, address = address[5..13], out = eao);
+    RAM512(in = in, load = ebload, address = address[5..13], out = ebo);
+    RAM512(in = in, load = ecload, address = address[5..13], out = eco);
+    RAM512(in = in, load = edload, address = address[5..13], out = edo);
+
+    RAM512(in = in, load = faload, address = address[5..13], out = fao);
+    RAM512(in = in, load = fbload, address = address[5..13], out = fbo);
+    RAM512(in = in, load = fcload, address = address[5..13], out = fco);
+    RAM512(in = in, load = fdload, address = address[5..13], out = fdo);
+
+    RAM512(in = in, load = gaload, address = address[5..13], out = gao);
+    RAM512(in = in, load = gbload, address = address[5..13], out = gbo);
+    RAM512(in = in, load = gcload, address = address[5..13], out = gco);
+    RAM512(in = in, load = gdload, address = address[5..13], out = gdo);
+
+    RAM512(in = in, load = haload, address = address[5..13], out = hao);
+    RAM512(in = in, load = hbload, address = address[5..13], out = hbo);
+    RAM512(in = in, load = hcload, address = address[5..13], out = hco);
+    RAM512(in = in, load = hdload, address = address[5..13], out = hdo);
+
+    Mux4Way16(a = aao, b = abo, c = aco, d = ado, sel = address[3..4], out = ao);
+    Mux4Way16(a = bao, b = bbo, c = bco, d = bdo, sel = address[3..4], out = bo);
+    Mux4Way16(a = cao, b = cbo, c = cco, d = cdo, sel = address[3..4], out = co);
+    Mux4Way16(a = dao, b = dbo, c = dco, d = ddo, sel = address[3..4], out = do);
+    Mux4Way16(a = eao, b = ebo, c = eco, d = edo, sel = address[3..4], out = eo);
+    Mux4Way16(a = fao, b = fbo, c = fco, d = fdo, sel = address[3..4], out = fo);
+    Mux4Way16(a = gao, b = gbo, c = gco, d = gdo, sel = address[3..4], out = go);
+    Mux4Way16(a = hao, b = hbo, c = hco, d = hdo, sel = address[3..4], out = ho);
+
+    Mux8Way16(a = ao, b = bo, c = co, d = do, e = eo, f = fo, g = go, h = ho, sel = address[0..2], out = out);
+}
